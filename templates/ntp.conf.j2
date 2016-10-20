@@ -1,0 +1,65 @@
+#{{ ansible_managed }}
+
+{% if ntp_settinkerpanic %}
+tinker panic 0
+{% endif %}
+
+{% if ntp_restrict_v4 %}
+restrict {{ ntp_restrict_opts|join(' ') }}
+restrict 127.0.0.1
+{% endif %}
+
+{% if ntp_restrict_v6 %}
+restrict -6 {{ ntp_restrict_opts|join(' ') }}
+restrict -6 ::1
+{% endif %}
+
+driftfile {{ ntp_driftfile }}
+{% for i in ntp_server %}
+server {{ i }} {{ntp_iburst}}
+{% endfor %}
+
+{% if ntp_uselocalclock %}
+server  127.127.1.0 # local clock
+fudge   127.127.1.0 stratum 10
+{% endif %}
+
+{% if ntp_crypto %}
+crypto
+{% endif %}
+
+{% if ntp_includefile %}
+includefile  {{ ntp_includefile }}
+{% endif %}
+
+{% if ntp_keys %}
+keys {{ ntp_keys }}
+{% endif %}
+
+{% if ntp_trustedkey %}
+trustedkey {{ ntp_trustedkey }}
+{% endif %}
+
+{% if ntp_requestkey %}
+requestkey  {{ ntp_requestkey }}
+{% endif %}
+
+{% if ntp_controlkey %}
+controlkey {{ ntp_controlkey }}
+{% endif %}
+
+{% if ntp_statistics %}
+statistics {{ ntp_statistics }}
+{% endif %}
+
+{% if ntp_broadcast %}
+broadcast {{ ntp_broadcast }}
+{% endif %}
+
+{% if ntp_broadcastclient %}
+broadcastclient
+{% endif %}   
+
+{% if ntp_multicastclient %}
+multicastclient {{ ntp_multicastclient }}
+{% endif %}   

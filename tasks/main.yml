@@ -1,0 +1,108 @@
+---
+- name: Add the OS specific varibles
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Disable ipv6 unsupported settings on Solaris
+  set_fact: ntp_restrict_v6=False
+  when:
+  - ansible_os_family == 'Solaris'
+  - ansible_distribution_version == '10'
+
+- name: Install the required packages in Redhat derivatives
+  yum: name={{ item }} state=installed
+  with_items: '{{ ntp_pkgs }}'
+  when:
+  - ansible_distribution == 'RedHat' or ansible_distribution == 'Oracle Linux' or ansible_distribution == 'CentOS'
+  tags: package-install
+
+- name: Install the required packages in SLES11/12
+  zypper: name={{ item }} state=present
+  when:
+  - ansible_distribution == 'SLES'
+  - ansible_distribution_major_version == '11' or ansible_distribution_major_version == '12'
+  tags: package-install
+
+- name: Check vmware-timesync status on VMWare guests
+  command: vmware-toolbox-cmd timesync status
+  register: vmwaretimesync
+  failed_when: false
+  changed_when: False
+  when:
+  - ansible_virtualization_role == 'guest' 
+  - ansible_virtualization_type == 'VMware'
+  tags: vmware-timesync-disable
+
+- name: Disable vmware-timesync if enabled on VMWare guests
+  command: vmware-toolbox-cmd timesync disable
+  when:
+  - ansible_virtualization_role == 'guest'
+  - ansible_virtualization_type == 'VMware'
+  - vmwaretimesync.stdout == 'Enabled'
+  tags: vmware-timesync-disable
+
+- name: Set tinker panic 0 for guests if desired
+  set_fact: ntp_settinkerpanic=True
+  when:
+  - ntp_tinkerpanicifvm
+  - ansible_virtualization_role == 'guest'
+  tags: configuration
+  
+- name: Disable chrony on EL7 variants
+  service: name=chrony state=stopped enabled=no
+  when:
+  - ansible_distribution == 'RedHat' or ansible_distribution == 'Oracle Linux' or ansible_distribution == 'CentOS'
+  - ansible_distribution_major_version == '7'
+  tags: chrony-disable
+
+- name: Check for centrify configuration
+  stat: path=/etc/centrifydc/centrifydc.conf
+  register: centrifyconf
+  failed_when: false
+  changed_when: false
+  tags: centrify-disable
+
+- name: Check if centrify is running
+  command: adinfo --mode
+  register: adclient
+  failed_when: false
+  changed_when: false
+  when:
+  - centrifyconf.stat.exists
+  - centrifyconf.stat.isreg
+  tags: centrify-disable
+
+- name: Disable centrify sntp if using centrify
+  lineinfile: dest=/etc/centrifydc/centrifydc.conf
+              regexp='\s*adclient.sntp.enabled{{":"}} true'
+              backrefs=yes
+              line='adclient.sntp.enabled{{":"}} true'
+  notify: reload centrify
+  when:
+  - adclient.stdout == 'connected'
+  - centrifyconf.stat.exists
+  - centrifyconf.stat.isreg
+  tags: centrify-disable
+
+- name: Copy the ntp.conf template file
+  template: src=ntp.conf.j2 dest={{ntp_conf_file}}
+  notify: restart ntp
+  tags: configuration
+
+- name: Set timezone (Linux) if desired
+  file: src='/usr/share/zoneinfo/{{ ntp_timezone }}'
+        dest=/etc/localtime
+        state=link
+        force=yes
+  when:
+  - configure_timezone
+  - ansible_distribution == 'RedHat' or ansible_distribution == 'Oracle Linux' or ansible_distribution == 'CentOS' or ansible_distribution == 'SLES'
+  tags: timezone
+
+- name: Set timezone (Solaris) if desired
+  lineinfile: dest=/etc/TIMEZONE
+              regexp='^TZ=.*'
+              line='TZ={{ ntp_timezone }}'
+  when:
+  - configure_timezone
+  - ansible_os_family == 'Solaris'
+  tags: timezone
