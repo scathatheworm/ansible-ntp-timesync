@@ -35,3 +35,10 @@ Variables:
 | `ntp_broadcast` | no | broadcast server |
 | `ntp_broadcastclient` | no | broadcast client |
 | `ntp_multicastclient` | no | multicast client |
+
+OS Specific varibles:
+
+| Name           | Description                                     |
+| -------------- | ------------------------------------------------|
+| `ntp_restrict_opts` | Restrict options to use for security |
+| `ntp_driftfile` | Location of the drift file |

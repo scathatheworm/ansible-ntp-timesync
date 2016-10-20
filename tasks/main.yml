@@ -26,6 +26,7 @@
   command: vmware-toolbox-cmd timesync status
   register: vmwaretimesync
   failed_when: false
+  always_run: True
   changed_when: False
   when:
   - ansible_virtualization_role == 'guest' 
@@ -47,17 +48,18 @@
   - ansible_virtualization_role == 'guest'
   tags: configuration
   
-- name: Disable chrony on EL7 variants
-  service: name=chrony state=stopped enabled=no
+- name: Remove chrony on EL7 variants
+  yum: name=chrony state=absent
   when:
   - ansible_distribution == 'RedHat' or ansible_distribution == 'Oracle Linux' or ansible_distribution == 'CentOS'
   - ansible_distribution_major_version == '7'
-  tags: chrony-disable
+  tags: chrony-remove
 
 - name: Check for centrify configuration
   stat: path=/etc/centrifydc/centrifydc.conf
   register: centrifyconf
   failed_when: false
+  always_run: True
   changed_when: false
   tags: centrify-disable
 
@@ -78,9 +80,9 @@
               line='adclient.sntp.enabled{{":"}} true'
   notify: reload centrify
   when:
-  - adclient.stdout == 'connected'
   - centrifyconf.stat.exists
   - centrifyconf.stat.isreg
+  - adclient.stdout == 'connected'
   tags: centrify-disable
 
 - name: Copy the ntp.conf template file
