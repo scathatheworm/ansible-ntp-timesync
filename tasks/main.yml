@@ -17,6 +17,7 @@
 
 - name: Install the required packages in SLES11/12
   zypper: name={{ item }} state=present
+  with_items: '{{ ntp_pkgs }}'
   when:
   - ansible_distribution == 'SLES'
   - ansible_distribution_major_version == '11' or ansible_distribution_major_version == '12'
@@ -29,6 +30,7 @@
   always_run: True
   changed_when: False
   when:
+  - ansible_system == 'Linux'
   - ansible_virtualization_role == 'guest' 
   - ansible_virtualization_type == 'VMware'
   tags: vmware-timesync-disable
@@ -36,6 +38,7 @@
 - name: Disable vmware-timesync if enabled on VMWare guests
   command: vmware-toolbox-cmd timesync disable
   when:
+  - ansible_system == 'Linux'
   - ansible_virtualization_role == 'guest'
   - ansible_virtualization_type == 'VMware'
   - vmwaretimesync.stdout == 'Enabled'
@@ -44,6 +47,7 @@
 - name: Set tinker panic 0 for guests if desired
   set_fact: ntp_settinkerpanic=True
   when:
+  - ansible_system == 'Linux'
   - ntp_tinkerpanicifvm
   - ansible_virtualization_role == 'guest'
   tags: configuration
