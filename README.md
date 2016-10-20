@@ -18,26 +18,20 @@ Variables:
 
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
-| `os_auth_pw_max_age` | 60 | Max days a password is valid before requiring a change |
-| `os_auth_pw_min_age` | 10 | Min days of age a password must have before it can be changed |
-| `os_auth_pw_warn_age` | 7 | Days before password expires that account will be warned |
-| `fail_deny` | 5 | Amount of times failed password can be tried before locking the account |
-| `fail_unlock` | 300 | Seconds that must pass before account is unlocked after failed logins |
-| `pwquality_minlen` | 8 | Minimum password length in characters |
-| `pwquality_maxrepeat` | 3 | Maximum amount of same characters repeated in password |
-| `pwquality_lcredit` | -1 | lowercase amount of chars that must be present in password |
-| `pwquality_ucredit` | -1 | uppercase amount of chars that must be present in password |
-| `pwquality_dcredit` | -1 | digits that must be present in password | 
-| `pwquality_ocredit` | -1 | special chars that must be present in a password |
-| `passhistory` | 6 | number of password to remember to avoid reusage |
-| `sshrootlogin` | 'no' | allow ssh root login, keep single quotes to avoid boolean evaluation |
-| `sshmainport` | 22 | main ssh port |
-| `sshextraport` | 32 | secondary ssh port, set to 0 to disable an extra port |
-| `setloginbanner` | 'yes' | use a login banner in ssh, keep single quotes to avoid boolean evaluation |
-| `selinux_state` | permissive | selinux configuration value |
-| `firewall_state` | stopped | Firewall desired status |
-| `firewall_enable` |'no' | Desired firewall configuration status |
-| `shell_timeout` | 900 | desired shell timeout in seconds, set 0 to disable |
-| `sshd_solaris_restrict_ipv4` | True | Restrict ssh connections to ipv4 in solaris as workaround for DISPLAY issues |
-| `solaris_dictionary_minwordlength` | 5 | Solaris minimum dictionary word length |
-| `disable_ctrlaltdel` | True | Whether to disable Control-Alt-Del and physical sendbreak in Solaris |
+| `ntp_tinkerpanicifvm` | True | Set tinker panic 0 for ntp never to panic for out of initial sync values |
+| `configure_timezone` | False | Do not configure the system timezone by default |
+| `ntp_timezone` | UTC | Default timezone value |
+| `ntp_server` | RHEL sources | Default timeservers to use |
+| `ntp_restrict_v4` | True | set security restrictions for ipv4 |
+| `ntp_restrict_v6` | True | set security restrictions for ipv6 |
+| `ntp_uselocalclock` | False | set local hardware clock as fallback time source |
+| `ntp_crypto` | no | Use cryptography |
+| `ntp_includefile` | no | includefile path |
+| `ntp_keys` | no | Key file for crypto |
+| `ntp_trustedkey` | no | key identifiers which are trusted |
+| `ntp_requestkey` | no | key identifier to use with the ntpdc utility |
+| `ntp_controlkey` | no | key identifier to use with the ntpq utility |
+| `ntp_statistics` | no | statistic records to use, such as clockstats cryptostats loopstats peerstats |
+| `ntp_broadcast` | no | broadcast server |
+| `ntp_broadcastclient` | no | broadcast client |
+| `ntp_multicastclient` | no | multicast client |
