@@ -67,6 +67,7 @@
   command: adinfo --mode
   register: adclient
   failed_when: false
+  always_run: True
   changed_when: false
   when:
   - centrifyconf.stat.exists
@@ -77,7 +78,7 @@
   lineinfile: dest=/etc/centrifydc/centrifydc.conf
               regexp='\s*adclient.sntp.enabled{{":"}} true'
               backrefs=yes
-              line='adclient.sntp.enabled{{":"}} true'
+              line='adclient.sntp.enabled{{":"}} false'
   notify: reload centrify
   when:
   - centrifyconf.stat.exists

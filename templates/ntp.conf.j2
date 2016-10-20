@@ -5,12 +5,12 @@ tinker panic 0
 {% endif %}
 
 {% if ntp_restrict_v4 %}
-restrict {{ ntp_restrict_opts|join(' ') }}
+restrict default {{ ntp_restrict_opts|join(' ') }}
 restrict 127.0.0.1
 {% endif %}
 
 {% if ntp_restrict_v6 %}
-restrict -6 {{ ntp_restrict_opts|join(' ') }}
+restrict -6 default {{ ntp_restrict_opts|join(' ') }}
 restrict -6 ::1
 {% endif %}
 

@@ -6,7 +6,7 @@ ntp_timezone: UTC
 ntp_server: [0.rhel.pool.ntp.org, 1.rhel.pool.ntp.org, 2.rhel.pool.ntp.org, 3.rhel.pool.ntp.org]
 ntp_restrict_v4: True
 ntp_restrict_v6: True
-tp_uselocalclock: False
+ntp_uselocalclock: False
 ntp_crypto: no
 ntp_includefile: no
 ntp_keys: no
