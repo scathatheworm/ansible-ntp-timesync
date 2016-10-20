@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/scathatheworm/ansible-ntp-timesync.svg)](https://travis-ci.org/scathatheworm/ansible-ntp-timesync) [![Ansible Galaxy](http://img.shields.io/badge/galaxy-scathatheworm.ntp-timesync.svg)](https://galaxy.ansible.com/scathatheworm/ntp-timesync)
+
 # ansible-ntp-timesync
 Ansible Role for configuring NTP
 
