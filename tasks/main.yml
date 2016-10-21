@@ -85,7 +85,7 @@
 
 - name: Disable centrify sntp if using centrify
   lineinfile: dest=/etc/centrifydc/centrifydc.conf
-              regexp='#?\s*adclient.sntp.enabled{{":"}} true'
+              regexp='#?\s*adclient.sntp.enabled.*'
               backrefs=yes
               line='adclient.sntp.enabled{{":"}} false'
   notify: reload centrify
@@ -118,3 +118,6 @@
   - configure_timezone
   - ansible_os_family == 'Solaris'
   tags: timezone
+
+- name: Enable ntp service
+  service: name={{ ntp_svc_name }} enabled=yes
