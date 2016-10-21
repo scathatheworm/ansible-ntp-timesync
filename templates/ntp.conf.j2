@@ -22,30 +22,6 @@ server  127.127.1.0 # local clock
 fudge   127.127.1.0 stratum 10
 {% endif %}
 
-{% if ntp_crypto %}
-crypto
-{% endif %}
-
-{% if ntp_includefile %}
-includefile  {{ ntp_includefile }}
-{% endif %}
-
-{% if ntp_keys %}
-keys {{ ntp_keys }}
-{% endif %}
-
-{% if ntp_trustedkey %}
-trustedkey {{ ntp_trustedkey }}
-{% endif %}
-
-{% if ntp_requestkey %}
-requestkey  {{ ntp_requestkey }}
-{% endif %}
-
-{% if ntp_controlkey %}
-controlkey {{ ntp_controlkey }}
-{% endif %}
-
 {% if ntp_statistics %}
 statistics {{ ntp_statistics }}
 {% endif %}

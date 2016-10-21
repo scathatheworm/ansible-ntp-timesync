@@ -27,12 +27,6 @@ Variables:
 | `ntp_restrict_v4` | True | set security restrictions for ipv4 |
 | `ntp_restrict_v6` | True | set security restrictions for ipv6 |
 | `ntp_uselocalclock` | False | set local hardware clock as fallback time source |
-| `ntp_crypto` | no | Use cryptography |
-| `ntp_includefile` | no | includefile path |
-| `ntp_keys` | no | Key file for crypto |
-| `ntp_trustedkey` | no | key identifiers which are trusted |
-| `ntp_requestkey` | no | key identifier to use with the ntpdc utility |
-| `ntp_controlkey` | no | key identifier to use with the ntpq utility |
 | `ntp_statistics` | no | statistic records to use, such as clockstats cryptostats loopstats peerstats |
 | `ntp_broadcast` | no | broadcast server |
 | `ntp_broadcastclient` | no | broadcast client |
