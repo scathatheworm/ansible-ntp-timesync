@@ -11,3 +11,4 @@ ntp_statistics: no
 ntp_broadcast: no 
 ntp_broadcastclient: no         
 ntp_multicastclient: no
+ntp_slewenable: False

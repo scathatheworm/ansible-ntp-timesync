@@ -1,6 +1,7 @@
 ---
 - name: Add the OS specific varibles
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}_{{ansible_distribution_major_version}}.yml"
+  tags: package-install,vmware-timesync-disable,configuration,centrify-disable,chrony-remove,timezone,slew_mode
 
 - name: Disable ipv6 unsupported settings on Solaris
   set_fact: ntp_restrict_v6=False
@@ -15,12 +16,11 @@
   - ansible_distribution == 'RedHat' or ansible_distribution == 'Oracle Linux' or ansible_distribution == 'CentOS'
   tags: package-install
 
-- name: Install the required packages in SLES11/12
+- name: Install the required packages in SLES
   zypper: name={{ item }} state=present
   with_items: '{{ ntp_pkgs }}'
   when:
   - ansible_distribution == 'SLES'
-  - ansible_distribution_major_version == '11' or ansible_distribution_major_version == '12'
   tags: package-install
 
 - name: Check vmware-timesync status on VMWare guests
@@ -121,3 +121,13 @@
 
 - name: Enable ntp service
   service: name={{ ntp_svc_name }} enabled=yes
+  tags: configuration
+
+- name: Set slew mode if enabled - Linux
+  lineinfile: dest={{ ntp_configfile_location }}
+              regexp='^{{ntp_optsvar}}=.*'
+              line='{{ntp_optsvar}}=\"{% if ntp_slewenable %}-x {% endif %}{{ntp_optsvalue}}\"'
+              state=present
+  when: ansible_system == 'Linux'
+  tags: slew_mode
+  notify: restart ntp

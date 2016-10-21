@@ -31,6 +31,7 @@ Variables:
 | `ntp_broadcast` | no | broadcast server |
 | `ntp_broadcastclient` | no | broadcast client |
 | `ntp_multicastclient` | no | multicast client |
+| `ntp_slewenable` | False | Set slew mode, useful for DB systems and to avoid issues with leap seconds |
 
 OS Specific varibles:
 
