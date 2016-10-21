@@ -1,0 +1,7 @@
+---
+ntp_pkgs:
+ntp_iburst:
+ntp_svc_name: ntp
+ntp_driftfile: /var/ntp/ntp.drift
+ntp_restrict_opts: [notrap, nomodify, nopeer, noquery]
+ntp_conf_file: /etc/inet/ntp.conf

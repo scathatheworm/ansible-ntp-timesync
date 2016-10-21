@@ -1,0 +1,10 @@
+---
+ntp_pkgs: xntp
+ntp_svc_name: ntp
+ntp_driftfile: /var/lib/ntp/drift
+ntp_restrict_opts: [kod, notrap, nomodify, nopeer, noquery]
+ntp_iburst: iburst
+ntp_conf_file: /etc/ntp.conf
+ntp_configfile_location: /etc/sysconfig/ntp
+ntp_optsvar: NTPD_OPTIONS
+ntp_optsvalue: '-u ntp'
