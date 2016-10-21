@@ -5,3 +5,4 @@
 
 - name: reload centrify
   command: adreload
+  failed_when: false
