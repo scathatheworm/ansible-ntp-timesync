@@ -13,6 +13,7 @@ restrict -6 ::1
 {% endif %}
 
 driftfile {{ ntp_driftfile }}
+
 {% for i in ntp_server %}
 server {{ i }} {{ntp_iburst}}
 {% endfor %}
@@ -25,15 +26,12 @@ fudge   127.127.1.0 stratum 10
 {% if ntp_statistics %}
 statistics {{ ntp_statistics }}
 {% endif %}
-
 {% if ntp_broadcast %}
 broadcast {{ ntp_broadcast }}
 {% endif %}
-
 {% if ntp_broadcastclient %}
 broadcastclient
 {% endif %}   
-
 {% if ntp_multicastclient %}
 multicastclient {{ ntp_multicastclient }}
 {% endif %}   
