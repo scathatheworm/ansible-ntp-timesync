@@ -2,6 +2,12 @@
 - name: Add the OS specific varibles
   include_vars: "{{ ansible_os_family }}_{{ansible_distribution_major_version}}.yml"
   tags: package-install,vmware-timesync-disable,configuration,centrify-disable,chrony-remove,timezone,slew_mode
+  when: ansible_os_family != 'Solaris'
+
+- name: Add the OS specific varibles
+  include_vars: "{{ ansible_os_family }}_{{ansible_distribution_version}}.yml"
+  tags: package-install,vmware-timesync-disable,configuration,centrify-disable,chrony-remove,timezone,slew_mode
+  when: ansible_system != 'Linux'
 
 - name: Disable ipv6 unsupported settings on Solaris
   set_fact: ntp_restrict_v6=False
