@@ -1,13 +1,13 @@
-{% if ntp_settinkerpanic %}
+{%- if ntp_settinkerpanic -%}
 tinker panic 0
 {% endif %}
 
-{% if ntp_restrict_v4 %}
+{%- if ntp_restrict_v4 -%}
 restrict default {{ ntp_restrict_opts|join(' ') }}
 restrict 127.0.0.1
 {% endif %}
 
-{% if ntp_restrict_v6 %}
+{%- if ntp_restrict_v6 -%}
 restrict -6 default {{ ntp_restrict_opts|join(' ') }}
 restrict -6 ::1
 {% endif %}
@@ -23,15 +23,15 @@ server  127.127.1.0 # local clock
 fudge   127.127.1.0 stratum 10
 {% endif %}
 
-{% if ntp_statistics %}
+{%- if ntp_statistics -%}
 statistics {{ ntp_statistics }}
 {% endif %}
-{% if ntp_broadcast %}
+{%- if ntp_broadcast -%}
 broadcast {{ ntp_broadcast }}
 {% endif %}
-{% if ntp_broadcastclient %}
+{%- if ntp_broadcastclient -%}
 broadcastclient
 {% endif %}   
-{% if ntp_multicastclient %}
+{%- if ntp_multicastclient -%}
 multicastclient {{ ntp_multicastclient }}
 {% endif %}   

@@ -33,7 +33,7 @@
   command: vmware-toolbox-cmd timesync status
   register: vmwaretimesync
   failed_when: false
-  always_run: True
+  check_mode: no
   changed_when: False
   when:
   - ansible_system == 'Linux'
@@ -74,7 +74,7 @@
   stat: path=/etc/centrifydc/centrifydc.conf
   register: centrifyconf
   failed_when: false
-  always_run: True
+  check_mode: no
   changed_when: false
   tags: centrify-disable
 
@@ -82,7 +82,7 @@
   command: adinfo --mode
   register: adclient
   failed_when: false
-  always_run: True
+  check_mode: no
   changed_when: false
   when:
   - centrifyconf.stat.exists
