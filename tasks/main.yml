@@ -15,18 +15,9 @@
   - ansible_os_family == 'Solaris'
   - ansible_distribution_version == '10'
 
-- name: Install the required packages in Redhat derivatives
-  yum: name={{ item }} state=installed
+- name: Install the required packages
+  package: name={{ item }} state=installed
   with_items: '{{ ntp_pkgs }}'
-  when:
-  - ansible_distribution == 'RedHat' or ansible_distribution == 'Oracle Linux' or ansible_distribution == 'CentOS'
-  tags: package-install
-
-- name: Install the required packages in SLES
-  zypper: name={{ item }} state=present
-  with_items: '{{ ntp_pkgs }}'
-  when:
-  - ansible_distribution == 'SLES'
   tags: package-install
 
 - name: Check vmware-timesync status on VMWare guests
