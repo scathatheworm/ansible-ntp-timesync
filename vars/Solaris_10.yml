@@ -1,5 +1,7 @@
 ---
 ntp_pkgs:
+- SUNWntpu
+- SUNWntpr
 ntp_iburst:
 ntp_svc_name: ntp
 ntp_driftfile: /var/ntp/ntp.drift

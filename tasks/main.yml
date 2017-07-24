@@ -16,8 +16,9 @@
   - ansible_distribution_version == '10'
 
 - name: Install the required packages
-  package: name={{ item }} state=installed
+  package: name={{ item }} state=present
   with_items: '{{ ntp_pkgs }}'
+  when: ansible_pkg_mgr != 'svr4pkg'
   tags: package-install
 
 - name: Check vmware-timesync status on VMWare guests
@@ -42,6 +43,7 @@
   - ansible_virtualization_type is defined
   - ansible_virtualization_role == 'guest'
   - ansible_virtualization_type == 'VMware'
+  - vmwaretimesync.stdout is defined
   - vmwaretimesync.stdout == 'Enabled'
   tags: vmware-timesync-disable
 
